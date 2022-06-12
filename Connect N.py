@@ -1,98 +1,3 @@
-class Board:
-    def __init__(self, N):
-        self.N = N
-
-    array = []
-    for x in range(7):
-        line = []
-        for y in range(6):
-            line.append(0)
-        array.append(line)
-
-    def print(self):
-        for y in reversed(range(6)):
-            for x in range(7):
-                print(self.array[x][y], end="")
-            print()
-
-    def addOne(self, y, player):
-        for index, number in enumerate(self.array[y]):
-            if(number == 0):
-                self.array[y][index] = player
-                return True
-        return False
-
-    def didSomebodyWin(self):
-        count = 0
-        for x in range(7):
-            oldNumber = 0
-            if(count == N):
-                return True
-            for y in range(6):
-                number = self.array[x][y]
-                if(number != 0):
-                    if(number == oldNumber):
-                        count += 1
-                    else:
-                        oldNumber = number
-                        count = 1
-                else:
-                    break
-        count = 0
-        for y in range(6):
-            oldNumber = 0
-            if(count == N):
-                return True
-            for x in range(7):
-                number = self.array[x][y]
-                if(number != 0):
-                    if(number == oldNumber):
-                        count += 1
-                    else:
-                        oldNumber = number
-                        count = 1
-                else:
-                    break
-        count = 0
-        for x in range(7):
-            y = 0
-            oldNumber = 0
-            if(count == N):
-                print(x, y, 1)
-                return True
-            for _ in range(x+1):
-                number = self.array[x][y]                
-                print(x,y)
-                if(number != 0):
-                    if(number == oldNumber):
-                        count += 1
-                    else:
-                        oldNumber = number
-                        count = 1
-                y += 1
-                x -= 1
-                if(y == 6):
-                    break
-        for _ in range(6):
-            y = 0
-            x = 6
-            oldNumber = 0
-            if(count == N):
-                print(x, y, 2)
-                return True
-            for _ in range(x+1):
-                number = self.array[x][y]
-                if(number != 0):
-                    if(number == oldNumber):
-                        count += 1
-                    else:
-                        oldNumber = number
-                        count = 1
-                y += 1
-                if(y == 5):
-                    break
-
-
 def isInputBetweenBoundaries(input):
     if(input <= 7 and input >= 1):
         return True
@@ -118,6 +23,63 @@ def askUserForN():
     if(output):
         return output
     return askUserForN()
+
+
+class Board:
+    def __init__(self, N):
+        self.N = N
+
+    array = []
+    for x in range(7):
+        line = []
+        for y in range(6):
+            line.append(0)
+        array.append(line)
+
+    def print(self):
+        for y in reversed(range(6)):
+            for x in range(7):
+                print(self.array[x][y], end="")
+            print()
+
+    def addOne(self, y, player):
+        for index, number in enumerate(self.array[y]):
+            if(number == 0):
+                self.array[y][index] = player
+                return True
+        return False
+
+    def didSomebodyWin(self):
+        for x in range(7):
+            for y in range(6):
+                main = self.array[x][y]
+                right = self.lookToDirection(self, main, x, y, 0, 1, 1)
+                if(right):
+                    return True
+                down = self.lookToDirection(self, main, x, y, 1, 0, 1)
+                if(down):
+                    return True
+                leftDiag = self.lookToDirection(self, main, x, y, -1, 1, 1)
+                if(leftDiag):
+                    return True
+                rightDiag = self.lookToDirection(self, main, x, y, +1, 1, 1)
+                if(rightDiag):
+                    return True
+                return False
+
+    def lookToDirection(self, main, x, y, changeTypeX, changeTypeY, multitude):
+        newX = x+changeTypeX*multitude
+        newY = y+changeTypeY*multitude
+        if(isInputBetweenBoundaries(newX) and isInputBetweenBoundaries(newY)):
+            right = self.array[newX][newY]
+            if(right == main):
+                if(multitude < self.N):
+                    return self.lookToDirection(
+                        self, main, x, y, changeTypeX, changeTypeY, multitude+1)
+                else:
+                    return True
+            return False
+        return False
 
 
 illegalMove = False
