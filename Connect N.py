@@ -1,5 +1,5 @@
-def isInputBetweenBoundaries(input):
-    if(input <= 7 and input >= 1):
+def isBetweenBoundaries(input,min,max):
+    if(input <= max and input >= min):
         return True
     return False
 
@@ -7,7 +7,7 @@ def isInputBetweenBoundaries(input):
 def isInputLegal(input):
     try:
         number = int(input)
-        if(isInputBetweenBoundaries(number)):
+        if(isBetweenBoundaries(number,1,7)):
             type(number)
             return number
         else:
@@ -53,29 +53,28 @@ class Board:
         for x in range(7):
             for y in range(6):
                 main = self.array[x][y]
-                right = self.lookToDirection(self, main, x, y, 0, 1, 1)
+                right = self.lookToDirection(main, x, y, 0, 1, 1)
                 if(right):
                     return True
-                down = self.lookToDirection(self, main, x, y, 1, 0, 1)
+                down = self.lookToDirection(main, x, y, 1, 0, 1)
                 if(down):
                     return True
-                leftDiag = self.lookToDirection(self, main, x, y, -1, 1, 1)
+                leftDiag = self.lookToDirection(main, x, y, -1, 1, 1)
                 if(leftDiag):
                     return True
-                rightDiag = self.lookToDirection(self, main, x, y, +1, 1, 1)
+                rightDiag = self.lookToDirection(main, x, y, +1, 1, 1)
                 if(rightDiag):
                     return True
-                return False
+        return False
 
     def lookToDirection(self, main, x, y, changeTypeX, changeTypeY, multitude):
         newX = x+changeTypeX*multitude
         newY = y+changeTypeY*multitude
-        if(isInputBetweenBoundaries(newX) and isInputBetweenBoundaries(newY)):
+        if(isBetweenBoundaries(newX,0,6) and isBetweenBoundaries(newY,0,5)):
             right = self.array[newX][newY]
-            if(right == main):
-                if(multitude < self.N):
-                    return self.lookToDirection(
-                        self, main, x, y, changeTypeX, changeTypeY, multitude+1)
+            if(right != 0 and right == main):
+                if(multitude < self.N-1):
+                    return self.lookToDirection(main, x, y, changeTypeX, changeTypeY, multitude+1)
                 else:
                     return True
             return False
