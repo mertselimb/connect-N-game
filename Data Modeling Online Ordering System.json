@@ -1,0 +1,111 @@
+enum AddressType {
+	HOME,
+	WORK,
+	SCHOOL
+}
+
+type Coordinate {
+	x:Float!,
+	y:Float!
+}
+
+type Address {
+	type:AddressType!,
+	coordinates: Coordinate!,
+	street: String!,
+	city: String!,
+	state: String!,
+	postcode: Int!,
+	country: String!,
+	doorNumber: Int!,
+	floor: Int,
+	buildingNumber: Int!
+}
+
+type User {
+  address: Address!,
+  firstName: String!,
+  lastName: String!,
+  middleName: String,
+  phoneNumber: Int!,
+  email: String!,
+  birthDay: DateTime,
+}
+
+enum MenuItemCategory {
+	PIZZA,
+	HAMBURGER,
+	PASTA,
+	SALAD,
+	MEXICAN
+}
+
+enum ModifierType {
+	DROPDOWN,
+	TEXT_INPUT,
+	RADIO
+}
+
+type ModifierSelection{
+	text: String!,
+	priceChange: Float,
+	isAvailable: Boolean! 
+}
+
+type Modifier{
+	type: ModifierType!,
+	name: String!,
+	selections: [ModifierSelection]
+}
+
+enum PriceType{
+	PERCENT,
+	NORMAL
+}
+
+type Price {
+	price: Float!,
+	priceType: PriceType!,
+	discount: Price
+}
+
+type Item {
+	name: String!,
+	price: Price!,
+	description: String!,
+	includes: [Item]
+}
+
+type menuItem implements Item{
+	category: [MenuItemCategory!]!,
+	modifiers:[Modifier],
+	isAvailable: Boolean! 
+}
+
+enum CostItemType {
+	SUBTOTAL,
+	DELIVERY_FEES,
+	TAXES
+}
+
+type costItem implements Item{
+	type: CostItemType!
+}
+
+type grandTotal implements Item{
+}
+
+enum LineItemType {
+  COST_ITEM,
+  GRAND_TOTAL,
+  MENU_ITEM
+}
+
+type LineItem {
+	type:LineItemType!,
+	item: Item
+}
+
+type Cart {
+  lineItems: [LineItem!]!
+}
