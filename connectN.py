@@ -71,8 +71,8 @@ class Board:
         newX = x+changeTypeX*multitude
         newY = y+changeTypeY*multitude
         if(isBetweenBoundaries(newX,0,6) and isBetweenBoundaries(newY,0,5)):
-            right = self.array[newX][newY]
-            if(right != 0 and right == main):
+            selected = self.array[newX][newY]
+            if(selected != 0 and selected == main):
                 if(multitude < self.N-1):
                     return self.lookToDirection(main, x, y, changeTypeX, changeTypeY, multitude+1)
                 else:
